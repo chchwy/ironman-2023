@@ -1,5 +1,6 @@
 #include <QApplication>
 #include <QWidget>
+#include <QLabel>
 #include <QSlider>
 #include <QSpinBox>
 #include <QHBoxLayout>
@@ -8,6 +9,8 @@ int main(int argc, char *argv[])
 {
     QApplication a(argc, argv);
     QWidget w;
+
+    QLabel* label = new QLabel("溫度：");
 
     QSlider* slider = new QSlider;
     slider->setOrientation(Qt::Horizontal);
@@ -25,8 +28,12 @@ int main(int argc, char *argv[])
     QHBoxLayout* layout = new QHBoxLayout;
     w.setLayout(layout);
 
-    //layout->addWidget(slider);
+    layout->addWidget(label);
+    layout->addWidget(slider);
     layout->addWidget(spinbox);
+
+    QObject::connect(slider, &QSlider::valueChanged, spinbox, &QSpinBox::setValue);
+    QObject::connect(spinbox, &QSpinBox::valueChanged, slider, &QSlider::setValue);
 
     w.show();
     return a.exec();
